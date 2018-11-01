@@ -6,22 +6,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: { name: "Bob" },
+      currentUser: { name: 'Bob' },
       userCount: 0,
-      messages: [] // messages stored here
+      messages: []
     };
     this.addNewMessage = this.addNewMessage.bind(this);
     this.addNewUsername = this.addNewUsername.bind(this);
     this.socket = new WebSocket(`ws://${window.location.hostname}:3001`);
   }
   addNewUsername(event) {
-    // console.log('newusername', event.target.value); 
     const oldUser = this.state.currentUser.name;  
-    //console.log("oldUser: ", oldUser);  
     const update = {
-      type: "notification",
+      type: 'notification',
       username: event,
-      content: `${oldUser} changed their name to ${event}`
+      content: `${ oldUser } changed their name to ${ event }`
     };
     this.setState({
       currentUser: { name: event }
@@ -29,23 +27,20 @@ class App extends Component {
     this.socket.send(JSON.stringify(update));
   }
   addNewMessage(newMessage) {
-    // console.log('newMessage', newMessage);
     const msg = {
-      type: "message",
+      type: 'message',
       text: newMessage,
       username: this.state.currentUser.name
     };
-    //console.log('sending this', msg);
     this.socket.send(JSON.stringify(msg));
   }
   componentDidMount() {
     this.socket.onmessage = (event) => {
 
       const incommingMessage = JSON.parse(event.data);
-      //console.log("incommingMessage: ", incommingMessage);
 
       switch(incommingMessage.type) {
-        case('message'): 
+        case 'message': {
           const newMessageFromServer = {
             id: incommingMessage.id,
             username: incommingMessage.username,
@@ -54,9 +49,9 @@ class App extends Component {
           };
           const messages = this.state.messages.concat(newMessageFromServer);
           this.setState({ messages: messages });
-        break;
-
-        case('notification'): 
+          break;
+        }
+        case 'notification': {
           const newNotificationFromServer = {
             id: incommingMessage.id,
             username: incommingMessage.username,
@@ -65,22 +60,20 @@ class App extends Component {
           };
           const notifications = this.state.messages.concat(newNotificationFromServer);
           this.setState({ messages: notifications });
-        break;
-
-        case('increment'):
+          break;
+        }
+        case 'increment': {
           this.setState({
             userCount: incommingMessage.users
           })
-          //console.log("From Switch: ", this.state.userCount);
-        break;
-
-        case('decrement'):
+          break;
+        }
+        case 'decrement': {
           this.setState({
             userCount: incommingMessage.users
           })
-          //console.log("From Switch: ", this.state.userCount);
-        break;
-
+          break;
+        }
       }
     }
   }
@@ -95,7 +88,8 @@ class App extends Component {
         <Chatbar
           userName={ this.state.currentUser.name }
           onCompleteMessage={ this.addNewMessage }
-          updateName={ this.addNewUsername } />
+          updateName={ this.addNewUsername }
+        />
       </div>
     );
   }

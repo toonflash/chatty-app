@@ -18,4 +18,8 @@ function MessageList(props) {
     )
 }
 
+MessageList.propTypes = {
+    messages: React.PropTypes.string.isRequired
+}
+
 export default MessageList;

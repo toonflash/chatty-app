@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 function Message({user, type, content}) {
     return (
@@ -14,6 +14,12 @@ function Message({user, type, content}) {
             }
         </div>
     )
+}
+
+Message.propTypes = {
+    user: React.PropTypes.string.isRequired,
+    type: React.PropTypes.string.isRequired,
+    content: React.PropTypes.string.isRequired
 }
 
 export default Message;

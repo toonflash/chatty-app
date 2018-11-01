@@ -10,12 +10,12 @@ class Chatbar extends React.Component {
         this.updateName = this.updateName.bind(this);
     }
     updateName(e) {         
-        this.props.updateName(e.target.value); //App
+        this.props.updateName(e.target.value);
     }
     onCompleteMessage(e) {
         if(e.key === 'Enter'){            
-            this.props.onCompleteMessage(e.target.value); //App
-            e.target.value = "";
+            this.props.onCompleteMessage(e.target.value);
+            e.target.value = '';
         }
     }
     render() {
@@ -26,6 +26,12 @@ class Chatbar extends React.Component {
             </footer>
         );
     }
+}
+
+Chatbar.propTypes = {
+    userName: React.PropTypes.string.isRequired,
+    updateName: React.PropTypes.string.isRequired,
+    onCompleteMessage: React.PropTypes.string.isRequired
 }
 
 export default Chatbar; 

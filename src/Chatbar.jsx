@@ -7,25 +7,22 @@ class Chatbar extends React.Component {
             userName: this.props.userName
         }
         this.onCompleteMessage = this.onCompleteMessage.bind(this);
-        // this.updateName = this.updateName.bind(this); ===========> might be needed later on? maybe not
+        this.updateName = this.updateName.bind(this);
     }
-    // updateName(event) { ===========> might be needed later on? maybe not
-    //     console.log('keypressed!', event.target.value);
-    //     console.log('this.props.userName', this.props.userName);
-    //     this.setState({ userName: event.target.value });
-    //     console.log('state!!!!!', this.state);
-    // }
-    onCompleteMessage(event) {
-        if(event.key === 'Enter'){            
-            this.props.onCompleteMessage(event.target.value); //App component
-            event.target.value = "";
+    updateName(e) {         
+        this.props.updateName(e.target.value); //App component
+    }
+    onCompleteMessage(e) {
+        if(e.key === 'Enter'){            
+            this.props.onCompleteMessage(e.target.value); //App component
+            e.target.value = "";
         }
     }
     render() {
         return (
             <footer className="chatbar">
                 {/* <p>Yo yo {this.props.userName}</p> */}
-                <input className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={ this.state.userName } onKeyUp={ this.props.updateName } />
+                <input className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={ this.state.userName } onBlur={ this.updateName } />
                 <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyPress={ this.onCompleteMessage } />
             </footer>
         );

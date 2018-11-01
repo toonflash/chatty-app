@@ -14,8 +14,18 @@ class App extends Component {
     this.socket = new WebSocket(`ws://${window.location.hostname}:3001`);
   }
   addNewUsername(event) {
-    // console.log('newusername', event.target.value);
-    this.setState({ currentUser: { name: event.target.value }});
+    // console.log('newusername', event.target.value); 
+    const oldUser = this.state.currentUser.name;  
+    //console.log("oldUser: ", oldUser);  
+    const update = {
+      type: "notification",
+      username: event,
+      content: `${oldUser} changed their name to ${event}`
+    };
+    this.setState({
+      currentUser: { name: event }
+    });
+    this.socket.send(JSON.stringify(update));
   }
   addNewMessage(newMessage) {
     // console.log('newMessage', newMessage);
@@ -30,11 +40,28 @@ class App extends Component {
   componentDidMount() {
     this.socket.onmessage = (event) => {
       const incommingMessage = JSON.parse(event.data);
+
+      // switch(incommingMessage.type) {
+      //   case "message":
+      //     // handle incoming message
+      //     console.log("incommingMessage = message!");
+      //     break;
+      //   case "notification":
+      //     // handle incoming notification
+      //     console.log("incommingMessage = notification!!!");
+      
+      //     break;
+      //   default:
+      //     // show an error in the console if the message type is unknown
+      //     //throw new Error("Unknown event type " + data.type);
+      // }
       //console.log('new msg from server!!!!!:', incommingMessage);
+
       const newMessageFromServer = {
         id: incommingMessage.id,
         username: incommingMessage.username,
-        content: incommingMessage.content
+        content: incommingMessage.content,
+        type: incommingMessage.type
       };
       const messages = this.state.messages.concat(newMessageFromServer);
       this.setState({ messages: messages });
@@ -47,7 +74,7 @@ class App extends Component {
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
-        <MessageList messages={ this.state.messages } />
+        <MessageList messages={ this.state.messages } oldUser={ this.state.currentUser.name} />
         <Chatbar
           userName={ this.state.currentUser.name }
           onCompleteMessage={ this.addNewMessage }

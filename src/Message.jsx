@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 
-function Message(props) {
+function Message({user, type, content}) {
     return (
         <div>
-            <div className="message">
-                <span className="message-username">{props.user}</span>
-                <span className="message-content">{props.content}</span>
-            </div>
+            {type === 'message' ?
+                <div className="message">
+                    <span className="message-username">{ user }</span>
+                    <span className="message-content">{ content }</span>
+                </div> :
+                <div className="notification">
+                    <span className="notification-content">{ content }</span>
+                </div>
+            }
         </div>
     )
 }

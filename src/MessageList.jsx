@@ -5,9 +5,11 @@ function MessageList(props) {
     const messages = props.messages;
     const messageItem = messages.map((message) =>
         <Message 
-        key = {message.id}
-        user = {message.username}
-        content = {message.content} />
+            key = {message.id}
+            user = {message.username}
+            content = {message.content}
+            type = {message.type}
+        />
     );
     return(
     <main className="messages">

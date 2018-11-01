@@ -10,18 +10,17 @@ class Chatbar extends React.Component {
         this.updateName = this.updateName.bind(this);
     }
     updateName(e) {         
-        this.props.updateName(e.target.value); //App component
+        this.props.updateName(e.target.value); //App
     }
     onCompleteMessage(e) {
         if(e.key === 'Enter'){            
-            this.props.onCompleteMessage(e.target.value); //App component
+            this.props.onCompleteMessage(e.target.value); //App
             e.target.value = "";
         }
     }
     render() {
         return (
             <footer className="chatbar">
-                {/* <p>Yo yo {this.props.userName}</p> */}
                 <input className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={ this.state.userName } onBlur={ this.updateName } />
                 <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyPress={ this.onCompleteMessage } />
             </footer>

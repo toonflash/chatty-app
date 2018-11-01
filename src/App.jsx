@@ -7,6 +7,7 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: { name: "Bob" },
+      userCount: 0,
       messages: [] // messages stored here
     };
     this.addNewMessage = this.addNewMessage.bind(this);
@@ -39,40 +40,56 @@ class App extends Component {
   }
   componentDidMount() {
     this.socket.onmessage = (event) => {
+
       const incommingMessage = JSON.parse(event.data);
+      //console.log("incommingMessage: ", incommingMessage);
 
-      // switch(incommingMessage.type) {
-      //   case "message":
-      //     // handle incoming message
-      //     console.log("incommingMessage = message!");
-      //     break;
-      //   case "notification":
-      //     // handle incoming notification
-      //     console.log("incommingMessage = notification!!!");
-      
-      //     break;
-      //   default:
-      //     // show an error in the console if the message type is unknown
-      //     //throw new Error("Unknown event type " + data.type);
-      // }
-      //console.log('new msg from server!!!!!:', incommingMessage);
+      switch(incommingMessage.type) {
+        case('message'): 
+          const newMessageFromServer = {
+            id: incommingMessage.id,
+            username: incommingMessage.username,
+            content: incommingMessage.content,
+            type: incommingMessage.type
+          };
+          const messages = this.state.messages.concat(newMessageFromServer);
+          this.setState({ messages: messages });
+        break;
 
-      const newMessageFromServer = {
-        id: incommingMessage.id,
-        username: incommingMessage.username,
-        content: incommingMessage.content,
-        type: incommingMessage.type
-      };
-      const messages = this.state.messages.concat(newMessageFromServer);
-      this.setState({ messages: messages });
+        case('notification'): 
+          const newNotificationFromServer = {
+            id: incommingMessage.id,
+            username: incommingMessage.username,
+            content: incommingMessage.content,
+            type: incommingMessage.type
+          };
+          const notifications = this.state.messages.concat(newNotificationFromServer);
+          this.setState({ messages: notifications });
+        break;
+
+        case('increment'):
+          this.setState({
+            userCount: incommingMessage.users
+          })
+          //console.log("From Switch: ", this.state.userCount);
+        break;
+
+        case('decrement'):
+          this.setState({
+            userCount: incommingMessage.users
+          })
+          //console.log("From Switch: ", this.state.userCount);
+        break;
+
+      }
     }
   }
   render() {
-    //console.log(this.state.currentUser);
     return (
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <span className="navbar-usercount"><span>{this.state.userCount}</span> users online</span>
         </nav>
         <MessageList messages={ this.state.messages } oldUser={ this.state.currentUser.name} />
         <Chatbar

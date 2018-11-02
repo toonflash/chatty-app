@@ -8,8 +8,7 @@ function MessageList(props) {
             key = {message.id}
             user = {message.username}
             content = {message.content}
-            type = {message.type}
-        />
+            type = {message.type} />
     );
     return(
     <main className="messages">

@@ -26,3 +26,6 @@ Once you have the Chatty App installed and you've started everythign up, simply 
 * uuid
 
 ### Screenshots
+
+!["Screenshot of chatty messages"](https://github.com/toonflash/chatty-app/blob/master/docs/chatty_app-1.png)
+!["Screenshot of chatty messages"](https://github.com/toonflash/chatty-app/blob/master/docs/chatty_app-2.png)
